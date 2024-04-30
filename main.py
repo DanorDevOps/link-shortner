@@ -218,4 +218,4 @@ def expand(short_key):
 </html>'''
 
 if __name__ == '__main__':
-    link_shortner_app.run(debug=True)
+    link_shortner_app.run(debug=True,port=8000)
