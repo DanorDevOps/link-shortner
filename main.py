@@ -125,6 +125,10 @@ expand_css = '''
     }
 '''
 
+@link_shortner_app.route('/health-check')
+def health_check():
+    return{"status":"ok"}
+
 @link_shortner_app.route('/')
 def home():
     return f'''<!DOCTYPE html>
