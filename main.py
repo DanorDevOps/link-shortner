@@ -3,6 +3,7 @@ import string
 import json
 from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
+import uvicorn
 
 app = FastAPI()
 
@@ -220,7 +221,6 @@ def expand(short_key: str):
         raise HTTPException(status_code=404, detail="Shortened URL not found.")
 
 if __name__ == "__main__":
-    import uvicorn
     uvicorn.run("main:app", host="127.0.0.1", port=8000, log_level="info")
 
 
