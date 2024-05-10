@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set the path to your virtual environment
-VENV_PATH="link-shortner/bin/activate"
+VENV_PATH="linkShortner/bin/activate"
 
 # Check if the virtual environment exists
 if [ -f "$VENV_PATH" ]; then
@@ -9,9 +9,9 @@ if [ -f "$VENV_PATH" ]; then
     source "$VENV_PATH"
 
     # Start three instances of uvicorn with different ports
-    uvicorn main:app --port 8000 &
-    uvicorn main:app --port 8001 &
-    uvicorn main:app --port 8002 &
+    docker run -p 7000:8080 -v ./data/:/app/data/ link-shortener-devops &
+    docker run -p 7001:8080 -v ./data/:/app/data/ link-shortener-devops &
+    docker run -p 7002:8080 -v ./data/:/app/data/ link-shortener-devops &
 
     # Wait for all instances to finish
     wait

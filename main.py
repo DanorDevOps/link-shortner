@@ -14,7 +14,7 @@ class LinkShortener:
 
     def load_from_file(self):
         try:
-            with open('urls.json', 'r') as file:
+            with open('./data/urls.json', 'r') as file:
                 data = file.read()
                 if data:
                     self.url_mapping = json.loads(data)
@@ -24,7 +24,7 @@ class LinkShortener:
             self.url_mapping = {}
 
     def save_to_file(self):
-        with open('urls.json', 'w') as file:
+        with open('./data/urls.json', 'w') as file:
             json.dump(self.url_mapping, file)
 
     def shorten_url(self, original_url: str, host_url: str):
