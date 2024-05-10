@@ -4,8 +4,11 @@ import json
 from fastapi import FastAPI, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 import uvicorn
+import os
 
 app = FastAPI()
+
+FILE_NAME = os.environ["LINKS_PATH"]
 
 class LinkShortener:
     def __init__(self):
@@ -14,7 +17,7 @@ class LinkShortener:
 
     def load_from_file(self):
         try:
-            with open('./data/urls.json', 'r') as file:
+            with open(FILE_NAME, 'r') as file:
                 data = file.read()
                 if data:
                     self.url_mapping = json.loads(data)
@@ -24,7 +27,7 @@ class LinkShortener:
             self.url_mapping = {}
 
     def save_to_file(self):
-        with open('./data/urls.json', 'w') as file:
+        with open(FILE_NAME, 'w') as file:
             json.dump(self.url_mapping, file)
 
     def shorten_url(self, original_url: str, host_url: str):
@@ -173,7 +176,8 @@ def get_shorten(request: Request):
 @app.post("/shorten", response_class=HTMLResponse)
 def post_shorten(request: Request, url: str = Form(...)):
     original_url = url
-    host_url = str(request.url)
+    # host_url = str(request.url).split("/shorten")
+    host_url= "http://localhost:7001/"
     for short_key, value in shortener.url_mapping.items():
         if value['original_url'] == original_url:
             return f"""
@@ -215,6 +219,7 @@ def post_shorten(request: Request, url: str = Form(...)):
 @app.get("/api/{short_key}", response_class=RedirectResponse)
 def expand(short_key: str):
     original_url = shortener.expand_url(short_key)
+    print(f"original url:{original_url}")
     if original_url:
         return RedirectResponse(url=original_url)
     else:
